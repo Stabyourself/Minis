@@ -77,6 +77,11 @@ The MIDI Notes are shown as button controls with names like "Note C4". These
 controls work as pressure-sensitive buttons. These button values are normalized
 as values between 0.0 to 1.0.
 
+Polyphonic aftertouch (note pressure) is shown as a separate set of button
+controls with names like "Note Pressure 049 (C#2)", which stay pressed for as
+long as the pressure is non-zero. This allows binding inputs such as cymbal
+chokes on electronic drum kits independently from the note itself.
+
 The MIDI Controls (CC) are shown as axis controls with names like "Control 10".
 These axis values are normalized as values between 0.0 to 1.0.
 

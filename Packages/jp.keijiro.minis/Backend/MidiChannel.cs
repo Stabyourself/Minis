@@ -81,8 +81,15 @@ namespace Minis.Backend
             if (_device == null)
                 return;
 
-            velocity = Math.Max(velocity, (byte)1);
-            _backend.QueueDeltaStateEvent(_device.GetNote(note), ref velocity);
+            _backend.QueueDeltaStateEvent(_device.GetNotePressure(note), ref velocity);
+
+            // Pressure can be sent without the note being held (e.g. cymbal chokes on drum kits),
+            // so only apply it to the note itself while it's active to avoid creating phantom presses
+            if (_activeNotes[note])
+            {
+                velocity = Math.Max(velocity, (byte)1);
+                _backend.QueueDeltaStateEvent(_device.GetNote(note), ref velocity);
+            }
         }
 
         public void ProcessCC(byte cc, byte value)
@@ -127,6 +134,7 @@ namespace Minis.Backend
             {
                 byte velocity = 0;
                 _backend.QueueDeltaStateEvent(_device.GetNote(note), ref velocity);
+                _backend.QueueDeltaStateEvent(_device.GetNotePressure(note), ref velocity);
                 _activeNotes[note] = false;
             }
         }

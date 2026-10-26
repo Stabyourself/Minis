@@ -44,6 +44,7 @@ namespace Minis
         public int channel { get; private set; }
 
         private MidiButtonControl[] _notes;
+        private MidiButtonControl[] _notePressures;
         private MidiAxisControl[] _cc;
 
         public MidiAxisControl pitchBend { get; private set; }
@@ -52,6 +53,10 @@ namespace Minis
         // Get an input control object bound for a specific note.
         public MidiButtonControl GetNote(int noteNumber)
             => _notes[noteNumber];
+
+        // Get an input control object bound for the pressure (polyphonic aftertouch) of a specific note.
+        public MidiButtonControl GetNotePressure(int noteNumber)
+            => _notePressures[noteNumber];
 
         // Get an input control object bound for a specific control element (CC).
         public MidiAxisControl GetCC(int controlNumber)
@@ -66,6 +71,12 @@ namespace Minis
             for (var i = 0; i < 128; i++)
             {
                 _notes[i] = GetChildControl<MidiButtonControl>("note" + i.ToString("D3"));
+            }
+
+            _notePressures = new MidiButtonControl[128];
+            for (var i = 0; i < 128; i++)
+            {
+                _notePressures[i] = GetChildControl<MidiButtonControl>("pressure" + i.ToString("D3"));
             }
 
             _cc = new MidiAxisControl[120];
